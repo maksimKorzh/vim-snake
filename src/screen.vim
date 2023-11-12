@@ -6,7 +6,7 @@
 " Test: open VIM, execute command ':source /path/to/screen.vim|call TestScreen()'
 
 " Init screen
-function! s:init_screen()
+function! Init_screen()
   syntax off
   set nonumber
   set nowrap
@@ -15,7 +15,7 @@ function! s:init_screen()
 endfunction
 
 " Fill screen
-function! s:fill_screen(char)
+function! Fill_screen(char)
   " Remove all lines from buffer 
   1,$d
   
@@ -33,7 +33,7 @@ function! s:fill_screen(char)
 endfunction
 
 " Print character at COL, ROW
-function! s:print_at(col, row, char)
+function! Print_at(col, row, char)
   " Move cursor to a given coordinate
   call cursor(a:row, a:col)
 
@@ -45,7 +45,7 @@ function! s:print_at(col, row, char)
 endfunction
 
 " Print string at COL, ROW
-function! s:print_message(col, row, msg)
+function! Print_message(col, row, msg)
   let col = a:col
   for ch in a:msg
     call s:print_at(col, a:row, ch)
@@ -54,18 +54,18 @@ function! s:print_message(col, row, msg)
 endfunction
 
 " Restore VIM configuration
-function! s:close_screen()
+function! Close_screen()
   source $HOME/.vimrc
 endfunction
 
 " Test library
 function! TestScreen()
-  call s:init_screen()
-  call s:fill_screen(" ")
+  call Init_screen()
+  call Fill_screen(" ")
   let msg = "VIM Screen by Code Monkey King, press any key to exit..."
   let row = winheight(0) / 2
   let col = winwidth(0) / 2 - len(msg) / 2
-  call s:print_message(col, row, msg)
-  call s:close_screen()
+  call Print_message(col, row, msg)
+  call Close_screen()
   call getchar()
 endfunction
