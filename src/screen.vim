@@ -44,6 +44,20 @@ function! s:print_at(col, row, char)
   redraw
 endfunction
 
+" Print string at COL, ROW
+function! s:print_message(col, row, msg)
+  let col = a:col
+  for ch in a:msg
+    call s:print_at(col, a:row, ch)
+    let col = col + 1
+  endfor
+endfunction
+
+" Restore VIM configuration
+function! s:close_screen()
+  source $HOME/.vimrc
+endfunction
+
 " Test library
 function! TestScreen()
   call s:init_screen()
@@ -51,9 +65,7 @@ function! TestScreen()
   let msg = "VIM Screen by Code Monkey King, press any key to exit..."
   let row = winheight(0) / 2
   let col = winwidth(0) / 2 - len(msg) / 2
-  for ch in msg
-    call s:print_at(col, row, ch)
-    let col = col + 1
-  endfor
+  call s:print_message(col, row, msg)
+  call s:close_screen()
   call getchar()
 endfunction
