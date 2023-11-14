@@ -72,8 +72,12 @@ function! s:draw_tetris()
       " Convert row and col coordinates into a square index
       let square = row * s:TETRIS_WIDTH + col
 
+      " Centeralize tetris
+      let center_col = winwidth(0) / 2 - s:TETRIS_WIDTH / 2
+      let center_row = winheight(0) / 2 - s:TETRIS_HEIGHT / 2
+ 
       " Render character
-      call Print_at(col+1, row+1, s:tetris[square])
+      call Print_at(col+center_col, row+center_row, s:tetris[square])
     endfor
   endfor
 endfunction
