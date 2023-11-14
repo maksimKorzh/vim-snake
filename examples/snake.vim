@@ -7,7 +7,8 @@
 " Print snake to screen
 let s:x = winwidth(0) / 4
 let s:y = winheight(0) / 2
-let s:snake = [[s:y, s:x], [s:y, s:x-1], [s:y, s:x-2]]
+let s:snake = [[s:x, s:y], [s:x-1, s:y], [s:x-2, s:y]]
+let s:food = [winwidth(0) / 2, winheight(0) / 2]
 let s:direction = "right"
 
 " Init screen
@@ -68,6 +69,14 @@ function! s:move(direction)
   let s:direction = a:direction
 endfunction
 
+" Custom random function by Jacob Gelbman
+" (http://github.com/zorgnax/vim-snake)
+function! s:rand ()
+    let b:rand = exists("b:rand") ? b:rand : 0
+    let b:rand = abs((((b:rand + localtime()) * 31421) + 6927)) % 65536
+    return b:rand
+endfunction
+
 " Print snake to screen
 function! s:print_snake(timer_id)
   let new_head = [s:snake[0][0], s:snake[0][1]]
@@ -82,14 +91,29 @@ function! s:print_snake(timer_id)
     let new_head[0] = new_head[0] + 1
   endif
 
-  let tail = remove(s:snake, -1)
-  call s:print_at(tail[0], tail[1], ' ')
-  call s:print_at(s:snake[0][0], s:snake[0][1], '*')
+  if s:snake[0][0] == s:food[0] && s:snake[0][1] == s:food[1]
+    call s:print_at(s:food[0], s:food[1], '*')
+    while 1
+      let s:food[0] = s:rand() % winheight(0) + 1
+      let s:food[0] = s:rand() % winwidth(0) + 1
+      if index(s:snake, s:food) == -1
+        echo s:food
+        call s:print_at(s:food[0], s:food[1], '@')
+        break
+      endif
+    endwhile
+  else 
+    let tail = remove(s:snake, -1)
+    call s:print_at(tail[0], tail[1], ' ')
+    call s:print_at(s:snake[0][0], s:snake[0][1], '*')
+  endif
 endfunction
 
 " Start game
 function! s:main()
   call getchar()
+  set t_ve=
+  call s:print_at(s:food[0], s:food[1], '@')
   map <buffer> <silent> h :call <SID>move("left")<CR>
   map <buffer> <silent> j :call <SID>move("down")<CR>
   map <buffer> <silent> k :call <SID>move("up")<CR>
