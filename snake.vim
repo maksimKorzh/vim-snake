@@ -24,10 +24,8 @@ endfunction
 " Fill screen
 function! s:fill_screen()
   1,$d
-  let width = winwidth(0)
-  let height = winheight(0)
-  for row in range(height)
-    execute "normal! i" . repeat(' ', width) . (row < height-1 ? "\<CR>" : "\<ESC>") . "0"
+  for row in range(winheight(0))
+    execute "normal! i" . repeat(' ', winwidth(0)) . (row < winheight(0)-1 ? "\<CR>" : "\<ESC>") . "0"
   endfor
   redraw
 endfunction
