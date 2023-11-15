@@ -14,11 +14,20 @@ let s:score = 0
 
 " Init screen
 function! s:init_screen()
+  set t_ve=
   syntax off
   set nonumber
   set nowrap
   set sidescrolloff=0
   set sidescroll=1
+endfunction
+
+" Restore VIM configuration
+function! s:close_screen()
+  call timer_stopall()
+  1,$d
+  source $HOME/.vimrc
+  set t_ve&vim
 endfunction
 
 " Fill screen
@@ -44,14 +53,6 @@ function! s:print_message(col, row, msg)
     call s:print_at(col, a:row, ch)
     let col = col + 1
   endfor
-endfunction
-
-" Restore VIM configuration
-function! s:close_screen()
-  call timer_stopall()
-  1,$d
-  source $HOME/.vimrc
-  set t_ve&vim
 endfunction
 
 " Custom random function by Jacob Gelbman
@@ -125,9 +126,6 @@ endfunction
 call s:init_screen()
 call s:fill_screen()
 
-" Hide curor
-set t_ve=
-
 " Print greetings
 let msg = "Move snake using h j k l, press any key to start..."
 call s:print_message(winwidth(0) / 2 - len(msg) / 2, winheight(0) / 2, msg)
@@ -137,10 +135,10 @@ call getchar()
 call s:fill_screen()
 
 " Color snake & apple
-syn match snake "\*"
-syn match apple "o"
-hi snake ctermfg=green
-hi apple ctermfg=red
+syntax match snake "\*"
+syntax match apple "o"
+highlight snake ctermfg=green
+highlight apple ctermfg=red
 
 " Map control keys
 map <buffer> <silent> <Esc> :call <SID>close_screen()<CR>
