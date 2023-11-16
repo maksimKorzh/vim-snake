@@ -7,4 +7,4 @@ Play snake in VIM text editor
 3. Enjoy!
 
 # YouTube tutorial
-is coming soon...
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/T8VEp0Ln-hA/0.jpg)](https://youtu.be/T8VEp0Ln-hA)
